@@ -5,8 +5,6 @@ import (
 	"os"
 )
 
-
-
 func main() {
 	for {
 
@@ -28,7 +26,7 @@ func main() {
 
 func showMenu(){
 	fmt.Println("Calculator")
-	fmt.Println("1. App")
+	fmt.Println("1. Add")
 	fmt.Println("2. Minus")
 	fmt.Println("3. Multiply")
 	fmt.Println("4. Divided")
@@ -39,16 +37,35 @@ func getChoice() int {
 	var choice int
 	fmt.Print("Enter your choice (1-5): ")
 	fmt.Scanln(&choice)
+	if( choice < 1 || choice > 5 ){
+		fmt.Println("Please enter a video choice (1-5).")
+		return getChoice()
+	}
 	return choice
 }
 
 func getNumbers() (float64, float64) {
 	var num1, num2 float64
-    fmt.Print("Enter Number 1: ")
-    fmt.Scanln(&num1)
-    fmt.Print("Enter Number 2: ")
-    fmt.Scanln(&num2)
-    return num1, num2 
+	for {
+		fmt.Print("Enter first number: ")
+		_,err := fmt.Scanln(&num1)
+		if err == nil {
+			break
+		}
+		fmt.Println("Invalid input. Please enter a number.")
+		clearInputBuffer()
+	}
+
+	for {
+		fmt.Print("Enter second number: ")
+		_,err := fmt.Scanln(&num2)
+		if err == nil {
+            break
+        }
+		fmt.Println("Invalid input. Please enter a number.")
+		clearInputBuffer()
+	}
+	return num1, num2
 }
 
 func calculator(choice int){
@@ -98,4 +115,9 @@ func divide(num1, num2 float64)(float64,error){
 		return 0, fmt.Errorf("cannot divide by zero")
 	}
 	return num1 / num2, nil
+}
+
+func clearInputBuffer(){
+	var discard string
+	fmt.Scanln(&discard)
 }
